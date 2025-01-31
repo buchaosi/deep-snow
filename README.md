@@ -22,6 +22,13 @@
 6. **可爱UI设计**  
    界面采用可爱风格的配色和布局，提供舒适的视觉体验。
 
+### API设置
+
+默认使用deepseek的API (目前也只能用deepseek）
+
+api_key:填写你的key
+Endpoint:建议填写https://api.deepseek.com/v1/chat/completions
+
 ### 构建方法
 
 #### 1. 安装依赖
