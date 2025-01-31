@@ -31,7 +31,11 @@ Endpoint:建议填写https://api.deepseek.com/v1/chat/completions
 
 ### 构建方法
 
-#### 1. 安装依赖
+#### 构建
+- 运行build.py
+- 构建结果生成在同目录的release内
+
+#### 依赖
 在运行脚本之前，请确保已安装以下Python库：
 - `tkinter`（通常内置在Python中）
 - `ttkbootstrap`
@@ -42,3 +46,4 @@ Endpoint:建议填写https://api.deepseek.com/v1/chat/completions
 可以通过以下命令安装所需的第三方库：
 ```bash
 pip install ttkbootstrap Pillow requests PyInstaller
+
