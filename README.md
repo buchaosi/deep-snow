@@ -26,6 +26,12 @@
 6. **可爱UI设计**  
    界面采用可爱风格的配色和布局，提供舒适的视觉体验。
 
+### UI展示
+![image](https://github.com/user-attachments/assets/47114c4e-154a-4b2b-80c2-bd55522946a6) ![image](https://github.com/user-attachments/assets/c6ca83c9-e573-4c39-80e2-8b0966d4b9e1)
+
+![image](https://github.com/user-attachments/assets/3dbd42cc-7e46-45df-97d1-0d02bf70a4a1)
+
+
 ### API设置
 
 默认使用deepseek的API (目前也只能用deepseek）
