@@ -907,25 +907,65 @@ class AIGirlfriendApp:
         # 人物设定页面
         prompt_frame = ttk.Frame(notebook)
         notebook.add(prompt_frame, text="人物设定")
-        
-        # 人物设定文本框
+
+        # 创建容器和滚动条（关键修改部分）
+        text_container = ttk.Frame(prompt_frame)
+        text_container.pack(fill=tk.BOTH, expand=True, padx=20, pady=10)
+
+        # 使用Grid布局确保组件对齐
+        text_container.grid_rowconfigure(0, weight=1)
+        text_container.grid_columnconfigure(0, weight=1)
+        text_container.grid_columnconfigure(1, weight=0)  # 滚动条列不扩展
+
+        # 创建文本框
         prompt_text = tk.Text(
-            prompt_frame,
+            text_container,
             wrap=tk.WORD,
-            width=50,
-            height=20,
-            font=('微软雅黑', 10)
+            font=('微软雅黑', 10),
+            undo=True,
+            maxundo=-1
         )
-        prompt_text.pack(fill=tk.BOTH, expand=True, padx=20, pady=10)
         
-        # 添加滚动条
-        prompt_scroll = ttk.Scrollbar(prompt_frame, command=prompt_text.yview)
-        prompt_scroll.pack(side=tk.RIGHT, fill=tk.Y)
-        prompt_text.config(yscrollcommand=prompt_scroll.set)
+        # 创建滚动条
+        scrollbar = ttk.Scrollbar(
+            text_container,
+            orient="vertical",
+            command=prompt_text.yview
+        )
         
-        # 插入当前的人物设定
+        # 布局组件
+        prompt_text.grid(row=0, column=0, sticky="nsew")
+        scrollbar.grid(row=0, column=1, sticky="ns")
+
+        # 配置滚动关联
+        prompt_text.configure(yscrollcommand=scrollbar.set)
+
+        # 精确处理滚轮事件（关键修改）
+        def handle_mousewheel(event):
+            # Windows/MacOS滚轮事件
+            if event.delta:
+                prompt_text.yview_scroll(int(-1*(event.delta/120)), "units")
+            # Linux滚轮事件
+            elif event.num == 4:
+                prompt_text.yview_scroll(-1, "units")
+            elif event.num == 5:
+                prompt_text.yview_scroll(1, "units")
+            return "break"  # 阻止事件传播
+
+        # 绑定所有滚轮事件变体
+        prompt_text.bind("<MouseWheel>", handle_mousewheel)    # Windows/MacOS
+        prompt_text.bind("<Button-4>", handle_mousewheel)      # Linux向上
+        prompt_text.bind("<Button-5>", handle_mousewheel)      # Linux向下
+
+        # 焦点控制（防止事件泄漏）
+        prompt_text.bind("<Enter>", 
+            lambda e: prompt_text.focus_set() or "break")
+        prompt_text.bind("<Leave>", 
+            lambda e: text_container.focus_set() or "break")
+
+        # 插入当前设定
         prompt_text.insert('1.0', current_settings.get('system_prompt', self.ai.system_prompt))
-        
+
         def save_settings():
             try:
                 max_history = int(history_entry.get().strip())
